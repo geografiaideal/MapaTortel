@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Mapa Turístico Caleta Tortel 2024-25</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+
+  <!-- favicon -->
+  <link rel="shortcut icon" type="image/x-icon" href="./logos_2_circulo.png">
+
+  <!-- Load Leaflet code library - see updates at http://leafletjs.com/download.html -->
+  <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script> -->
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+  <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
+  <!-- Load jQuery and PapaParse to read data from a CSV file -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
+
+  <!-- Position the map with Cascading Style Sheet (CSS) -->
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <!-- Insert HTML division tag to layout the map -->
+  <div id="map"></div>
+
+  <!-- Insert Javascript (.js) code to create the map -->
+  <script>
+
+
+
+    // Set up initial map center and zoom level
+    var map = L.map('map', {
+      // center: [41.57, -72.69],
+      center: [-47.80376, -73.54081], // EDIT latitude, longitude to re-center map
+      zoom: 18,  // EDIT from 1 to 18 -- decrease to zoom out, increase to zoom in
+      scrollWheelZoom: false,
+      tap: false
+    });
+
+    // Routes 
+    //  L.Routing.control({
+    //   waypoints: [
+    //      L.latLng(-47.80376, -73.54081),
+    //     L.latLng(-47.80376, -73.54081)
+    //    ],
+    //  routeWhileDragging: true
+    //  }).addTo(map);
+
+    // Iconos
+    var icon = L.icon({
+      iconUrl: "./img.png",
+      iconSize: [30, 35],
+      popupAnchor: [0, -10]
+    });
+
+    var icAbarrotes = L.icon({
+      iconUrl: "./fwdiconografamapatortel/abarrotes.svg",
+      iconSize: [30, 35],
+      popupAnchor: [0, -10]
+    });
+
+    var icAlimentacion = L.icon({
+      iconUrl: "./fwdiconografamapatortel/alimentacion.svg",
+      iconSize: [30, 35],
+      popupAnchor: [0, -10]
+    });
+
+    var icAlojamiento = L.icon({
+      iconUrl: "./fwdiconografamapatortel/alojamiento.svg",
+      iconSize: [30, 35],
+      popupAnchor: [0, -10]
+    });
+
+    var icArtesania = L.icon({
+      iconUrl: "./fwdiconografamapatortel/artesania.svg",
+      iconSize: [30, 35],
+      popupAnchor: [0, -10]
+    });
+
+    var icAventura = L.icon({
+      iconUrl: "./fwdiconografamapatortel/aventura.svg",
+      iconSize: [30, 35],
+      popupAnchor: [0, -10]
+    });
+
+    var icBomberos = L.icon({
+      iconUrl: "./fwdiconografamapatortel/bomberos.svg",
+      iconSize: [30, 35],
+      popupAnchor: [0, -10]
+    });
+
+    var icCabaña = L.icon({
+      iconUrl: "./fwdiconografamapatortel/cabaña.svg",
+      iconSize: [30, 35],
+      popupAnchor: [0, -10]
+    });
+
+    var icCama = L.icon({
+      iconUrl: "./fwdiconografamapatortel/cama.svg",
+      iconSize: [30, 35],
+      popupAnchor: [0, -10]
+    });
+
+    var icCarabineros = L.icon({
+      iconUrl: "./fwdiconografamapatortel/carabineros.svg",
+      iconSize: [30, 35],
+      popupAnchor: [0, -10]
+    });
+
+    var icCombustible = L.icon({
+      iconUrl: "./fwdiconografamapatortel/combustible.svg",
+      iconSize: [30, 35],
+      popupAnchor: [0, -10]
+    });
+
+    var icConaf = L.icon({
+      iconUrl: "./fwdiconografamapatortel/conaf.svg",
+      iconSize: [30, 35],
+      popupAnchor: [0, -10]
+    });
+
+    var icEspacio = L.icon({
+      iconUrl: "./fwdiconografamapatortel/espacio publico.svg",
+      iconSize: [30, 35],
+      popupAnchor: [0, -10]
+    });
+
+    var icFerreteria = L.icon({
+      iconUrl: "./fwdiconografamapatortel/ferreteria.svg",
+      iconSize: [30, 35],
+      popupAnchor: [0, -10]
+    });
+
+    var icInformaciones = L.icon({
+      iconUrl: "./fwdiconografamapatortel/informaciones.svg",
+      iconSize: [30, 35],
+      popupAnchor: [0, -10]
+    });
+
+    var icMirador = L.icon({
+      iconUrl: "./fwdiconografamapatortel/mirador.svg",
+      iconSize: [30, 35],
+      popupAnchor: [0, -10]
+    });
+
+    var icMunicipalidad = L.icon({
+      iconUrl: "./fwdiconografamapatortel/municipalidad.svg",
+      iconSize: [30, 35],
+      popupAnchor: [0, -10]
+    });
+
+    var icOtros = L.icon({
+      iconUrl: "./fwdiconografamapatortel/otros servicios.svg",
+      iconSize: [30, 35],
+      popupAnchor: [0, -10]
+    });
+
+    var icPlaza = L.icon({
+      iconUrl: "./fwdiconografamapatortel/plaza.svg",
+      iconSize: [30, 35],
+      popupAnchor: [0, -10]
+    });
+
+    var icPosta = L.icon({
+      iconUrl: "./fwdiconografamapatortel/posta.svg",
+      iconSize: [30, 35],
+      popupAnchor: [0, -10]
+    });
+
+
+    /* Control panel to display map layers */
+    var controlLayers = L.control.layers(null, null, {
+      position: "topright",
+      collapsed: false
+    }).addTo(map);
+
+
+    // SELECCIONADORES DE MAPA
+    // display Carto basemap tiles with light features and labels
+    // var light = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    var light = L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: ''
+    }).addTo(map); // EDIT - insert or remove ".addTo(map)" before last semicolon to display by default
+    controlLayers.addBaseLayer(light, 'agregar seleccionar segun usuario');
+
+    /* Stamen colored terrain basemap tiles with labels */
+    var terrain = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.{ext}', {
+      minZoom: 0,
+      maxZoom: 50,
+      attribution: '&copy; CNES, Distribution Airbus DS, © Airbus DS, © PlanetObserver (Contains Copernicus Data) | &copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      ext: 'jpg'
+    }); // EDIT - insert or remove ".addTo(map)" before last semicolon to display by default
+    controlLayers.addBaseLayer(terrain, 'usuario');
+
+
+    // see more basemap options at https://leaflet-extras.github.io/leaflet-providers/preview/
+
+    // Read markers data from data.csv
+    $.get('./todos.csv', function (csvString) {
+
+      // Use PapaParse to convert string to array of objects
+      var data = Papa.parse(csvString, { header: true, dynamicTyping: true }).data;
+
+      // For each row in data, create a marker and add it to the map
+      // For each row, columns `Latitude`, `Longitude`, and `Title` are required
+      for (var i in data) {
+        var row = data[i];
+
+        // iconos diferentes
+        if (row.Title == 'Carabineros') {
+          var config = {
+            icon: icCarabineros
+          }
+        }
+
+        if (row.Title == 'Conaf') {
+          var config = {
+            icon: icConaf
+          }
+        }
+
+        if (row.Title == 'Municipalidad') {
+          var config = {
+            icon: icMunicipalidad
+          }
+        }
+        //  posta y registro civil iconos solos 
+
+        // falta icono biblioteca
+
+        switch (row.Description) {
+          case 'Venta abarrotes/Grocery Store':
+            var config = {
+              icon: icAbarrotes
+            }
+            break;
+          case 'Restaurante':
+            var config = {
+              icon: icAlimentacion
+            }
+            break;
+          case 'Comida al paso/fast food':
+            var config = {
+              icon: icAlimentacion
+            }
+            break;
+          case 'Restaurante':
+            var config = {
+              icon: icAlimentacion
+            }
+            break;
+          case 'Camping':
+            var config = {
+              icon: icAlojamiento
+            }
+            break;
+          case 'Lodge':
+            var config = {
+              icon: icAlojamiento
+            }
+            break;
+          case 'Hostal':
+            var config = {
+              icon: icAlojamiento
+            }
+            break;
+          case 'Hostel':
+            var config = {
+              icon: icAlojamiento
+            }
+            break;
+          case 'Artesanias/crafts':
+            var config = {
+              icon: icArtesania
+            }
+            break;
+          case 'Senderismo/hiking':
+            var config = {
+              icon: icAventura
+            }
+            break;
+          case 'Expediciones fluviales/Boat trip':
+            var config = {
+              icon: icAventura
+            }
+            break;
+          case 'Cabañas/cabins':
+            var config = {
+              icon: icCabaña
+            }
+            break;
+          case 'Hospedaje/accommodation':
+            var config = {
+              icon: icCama
+            }
+            break;
+          case 'Residencial/accommodation':
+            var config = {
+              icon: icCama
+            }
+            break;
+          case 'Carga de combustible/Fuel Station':
+            var config = {
+              icon: icCombustible
+            }
+            break;
+          case 'Espacio multiuso/public facilities':
+            var config = {
+              icon: icEspacio
+            }
+            break;
+            case 'Ferreteria/Hardware Store':
+            var config = {
+              icon: icFerreteria
+            }
+            break;
+            case 'Informaciones/Information':
+            var config = {
+              icon: icInformaciones
+            }
+            break;
+            case 'Mirador/viewpoint':
+            var config = {
+              icon: icMirador
+            }
+            break;
+            case 'Otros servicios/Other services':
+            var config = {
+              icon: icOtros
+            }
+            break;
+            case 'Plaza/Square':
+            var config = {
+              icon: icPlaza
+            }
+            break;
+          default:
+            var config = {
+              icon: icon
+            }
+        }
+
+        // if (row.Description == 'Venta abarrotes/Grocery Store') {
+        //   var config = {
+        //     icon: icAbarrotes
+        //   }
+        // } else if (row.Description == 'Otros servicios/Other services') {
+        //   var config = {
+        //     icon: icOtros
+        //   };
+        // } else if (row.Description == 'Restaurante') {
+        //   var config = {
+        //     icon: icRestaurante
+        //   };
+        // } else {
+        //   var config = {
+        //     icon: icon
+        //   };
+        // }
+        var marker = L.marker([row.Latitude, row.Longitude], config, {
+          opacity: 1,
+          icon: config,
+        }).bindPopup('<b>' + row.Title + '</b> <br> <i>' + row.Description + '</i> <br> <u>' + row.Contact + '<u>');
+
+        marker.addTo(map);
+      }
+
+    });
+
+    map.attributionControl.setPrefix(
+      'View <a href="https://github.com/HandsOnDataViz/leaflet-map-csv" target="_blank">code on GitHub</a>'
+    );
+
+  </script>
+</body>
+
+</html>
