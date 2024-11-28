@@ -44,8 +44,13 @@
   <!-- mapa  -->
   <div id="map"></div>
 
-  <!-- agregar shapefile -->
+  <!-- agregar archivos shapefile -->
+  <!-- pasarelas -->
   <script src="./pasarelas.js"></script>
+  <!-- sendero -->
+  <script src="./Sendero_vigia.js"></script>
+  <!-- campos hielo norte -->
+  <script src="./RP_camposHN.js"></script>
 
   <script>
 
@@ -53,7 +58,7 @@
 
     var map = L.map('map', {
       // center: [41.57, -72.69],
-      center: [-47.80376, -73.54081], // EDIT latitude, longitude to re-center map
+      center: [-47.795847, -73.531392], // EDIT latitude, longitude to re-center map
       zoom: 18,  // EDIT from 1 to 18 -- decrease to zoom out, increase to zoom in
       scrollWheelZoom: false,
       tap: false
@@ -212,22 +217,48 @@
     // SELECCIONADORES DE MAPA
     // var light = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     var light = L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: ''
+      attribution: '',
+      maxZoom: 20,
     }).addTo(map); // EDIT - insert or remove ".addTo(map)" before last semicolon to display by default
     controlLayers.addBaseLayer(light, 'mapa_1');
 
     /* segundo mapa a cargar */
 
     var terrain = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-      minZoom: 0,
       maxZoom: 18,
       attribution: ''
     }); // EDIT - insert or remove ".addTo(map)" before last semicolon to display by default
     controlLayers.addBaseLayer(terrain, 'mapa_2');
 
+    // color
+    function style(feature) {
+      return {
+        weight: 2,
+        opacity: 1,
+        color: 'red',
+        dashArray: '6',
+        fillOpacity: 0.7
+      };
+    }
+
+    function style2(feature) {
+      return {
+        weight: 2,
+        opacity: 1,
+        color: 'purple',
+        dashArray: '6',
+        fillOpacity: 0.7
+      };
+    }
 
     // cargar shapefile con rutas
+    // pasarelas
     L.geoJSON(pasarelas).addTo(map);
+    // sendero 
+    L.geoJSON(Sendero_vigia, { style: style }).addTo(map);
+    // campos hielo norte 
+    L.geoJSON(RP_camposHN, { style: style2 }).addTo(map);
+
 
     // mas mapas https://leaflet-extras.github.io/leaflet-providers/preview/
 
@@ -263,7 +294,7 @@
         //       icon: icon
         //     }
         // }
-        
+
         if (row.Description == 'Venta abarrotes/Grocery Store') {
           var config = { icon: icAbarrotes }
         } else if (row.Description == 'Otros servicios/Other services') {
@@ -312,12 +343,12 @@
         } else if (row.Title == 'Biblioteca pública') {
           var config = { icon: icBiblioteca }
         }
-      
+
         // contactor
         var contact;
 
         if (row.Contact === null) {
-           contact = ' ';
+          contact = ' ';
         } else {
           contact = row.Contact;
         }
