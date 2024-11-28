@@ -9,14 +9,13 @@
   <!-- favicon -->
   <link rel="shortcut icon" type="image/x-icon" href="./logos_2_circulo.png">
 
-  <!-- Load Leaflet code library - see updates at http://leafletjs.com/download.html -->
-  <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script> -->
+  <!-- leaflet para cargar mapas y puntos -->
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
   <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
 
   <!-- Load jQuery and PapaParse to read data from a CSV file -->
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -42,15 +41,16 @@
 
 <body>
 
-  <!-- Insert HTML division tag to layout the map -->
+  <!-- mapa  -->
   <div id="map"></div>
 
-  <!-- Insert Javascript (.js) code to create the map -->
+  <!-- agregar shapefile -->
+  <script src="/pasarelas.js"></script>
+
   <script>
 
+    // declarar mapa - coor - zoom
 
-
-    // Set up initial map center and zoom level
     var map = L.map('map', {
       // center: [41.57, -72.69],
       center: [-47.80376, -73.54081], // EDIT latitude, longitude to re-center map
@@ -77,6 +77,18 @@
 
     var icAbarrotes = L.icon({
       iconUrl: "./fwdiconografamapatortel/abarrotes.svg",
+      iconSize: [30, 35],
+      popupAnchor: [0, -10]
+    });
+
+    var icRegistro = L.icon({
+      iconUrl: "./fwdiconografamapatortel/registro.svg",
+      iconSize: [30, 35],
+      popupAnchor: [0, -10]
+    });
+
+    var icBiblioteca = L.icon({
+      iconUrl: "./fwdiconografamapatortel/biblioteca.svg",
       iconSize: [30, 35],
       popupAnchor: [0, -10]
     });
@@ -198,191 +210,123 @@
 
 
     // SELECCIONADORES DE MAPA
-    // display Carto basemap tiles with light features and labels
     // var light = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     var light = L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: ''
     }).addTo(map); // EDIT - insert or remove ".addTo(map)" before last semicolon to display by default
-    controlLayers.addBaseLayer(light, 'agregar seleccionar segun usuario');
+    controlLayers.addBaseLayer(light, 'mapa_1');
 
-    /* Stamen colored terrain basemap tiles with labels */
-    var terrain = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.{ext}', {
+    /* segundo mapa a cargar */
+
+    var terrain = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       minZoom: 0,
-      maxZoom: 50,
-      attribution: '&copy; CNES, Distribution Airbus DS, © Airbus DS, © PlanetObserver (Contains Copernicus Data) | &copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      ext: 'jpg'
+      maxZoom: 18,
+      attribution: ''
     }); // EDIT - insert or remove ".addTo(map)" before last semicolon to display by default
-    controlLayers.addBaseLayer(terrain, 'usuario');
+    controlLayers.addBaseLayer(terrain, 'mapa_2');
 
 
-    // see more basemap options at https://leaflet-extras.github.io/leaflet-providers/preview/
+    // cargar shapefile con rutas
+    L.geoJSON(pasarelas).addTo(map);
 
-    // Read markers data from data.csv
+    // mas mapas https://leaflet-extras.github.io/leaflet-providers/preview/
+
+    // // Read markers data from data.csv
     $.get('./todos.csv', function (csvString) {
 
+      // cargar cvs
       // Use PapaParse to convert string to array of objects
       var data = Papa.parse(csvString, { header: true, dynamicTyping: true }).data;
 
-      // For each row in data, create a marker and add it to the map
-      // For each row, columns `Latitude`, `Longitude`, and `Title` are required
+      // req `Latitude`, `Longitude`, and `Title` 
       for (var i in data) {
         var row = data[i];
 
-        // iconos diferentes
-        if (row.Title == 'Carabineros') {
-          var config = {
-            icon: icCarabineros
-          }
-        }
-
-        if (row.Title == 'Conaf') {
-          var config = {
-            icon: icConaf
-          }
-        }
-
-        if (row.Title == 'Municipalidad') {
-          var config = {
-            icon: icMunicipalidad
-          }
-        }
-        //  posta y registro civil iconos solos 
-
-        // falta icono biblioteca
-
-        switch (row.Description) {
-          case 'Venta abarrotes/Grocery Store':
-            var config = {
-              icon: icAbarrotes
-            }
-            break;
-          case 'Restaurante':
-            var config = {
-              icon: icAlimentacion
-            }
-            break;
-          case 'Comida al paso/fast food':
-            var config = {
-              icon: icAlimentacion
-            }
-            break;
-          case 'Restaurante':
-            var config = {
-              icon: icAlimentacion
-            }
-            break;
-          case 'Camping':
-            var config = {
-              icon: icAlojamiento
-            }
-            break;
-          case 'Lodge':
-            var config = {
-              icon: icAlojamiento
-            }
-            break;
-          case 'Hostal':
-            var config = {
-              icon: icAlojamiento
-            }
-            break;
-          case 'Hostel':
-            var config = {
-              icon: icAlojamiento
-            }
-            break;
-          case 'Artesanias/crafts':
-            var config = {
-              icon: icArtesania
-            }
-            break;
-          case 'Senderismo/hiking':
-            var config = {
-              icon: icAventura
-            }
-            break;
-          case 'Expediciones fluviales/Boat trip':
-            var config = {
-              icon: icAventura
-            }
-            break;
-          case 'Cabañas/cabins':
-            var config = {
-              icon: icCabaña
-            }
-            break;
-          case 'Hospedaje/accommodation':
-            var config = {
-              icon: icCama
-            }
-            break;
-          case 'Residencial/accommodation':
-            var config = {
-              icon: icCama
-            }
-            break;
-          case 'Carga de combustible/Fuel Station':
-            var config = {
-              icon: icCombustible
-            }
-            break;
-          case 'Espacio multiuso/public facilities':
-            var config = {
-              icon: icEspacio
-            }
-            break;
-            case 'Ferreteria/Hardware Store':
-            var config = {
-              icon: icFerreteria
-            }
-            break;
-            case 'Informaciones/Information':
-            var config = {
-              icon: icInformaciones
-            }
-            break;
-            case 'Mirador/viewpoint':
-            var config = {
-              icon: icMirador
-            }
-            break;
-            case 'Otros servicios/Other services':
-            var config = {
-              icon: icOtros
-            }
-            break;
-            case 'Plaza/Square':
-            var config = {
-              icon: icPlaza
-            }
-            break;
-          default:
-            var config = {
-              icon: icon
-            }
-        }
-
-        // if (row.Description == 'Venta abarrotes/Grocery Store') {
-        //   var config = {
-        //     icon: icAbarrotes
-        //   }
-        // } else if (row.Description == 'Otros servicios/Other services') {
-        //   var config = {
-        //     icon: icOtros
-        //   };
-        // } else if (row.Description == 'Restaurante') {
-        //   var config = {
-        //     icon: icRestaurante
-        //   };
-        // } else {
-        //   var config = {
-        //     icon: icon
-        //   };
+        // switch (row.Description) {
+        //   case 'Venta abarrotes/Grocery Store':
+        //     var config = {
+        //       icon: icAbarrotes
+        //     }
+        //     break;
+        //   case 'Restaurante':
+        //     var config = {
+        //       icon: icAlimentacion
+        //     }
+        //     break;
+        //   case 'Comida al paso/fast food':
+        //     var config = {
+        //       icon: icAlimentacion
+        //     }
+        //     break;
+        //   default:
+        //     var config = {
+        //       icon: icon
+        //     }
         // }
+        
+        if (row.Description == 'Venta abarrotes/Grocery Store') {
+          var config = { icon: icAbarrotes }
+        } else if (row.Description == 'Otros servicios/Other services') {
+          var config = { icon: icOtros }
+        } else if (row.Description == 'Restaurante' || row.Description == 'Comida al paso/fast food') {
+          var config = { icon: icAlimentacion }
+        } else if (row.Description == 'Camping' || row.Description == 'Lodge' || row.Description == 'Hostal' || row.Description == 'Hostel') {
+          var config = { icon: icAlojamiento }
+        } else if (row.Description == 'Artesanias/crafts') {
+          var config = { icon: icArtesania }
+        } else if (row.Description == 'Senderismo/hiking' || row.Description == 'Expediciones fluviales/Boat trip') {
+          var config = { icon: icAventura }
+        } else if (row.Description == 'Cabañas/cabins') {
+          var config = { icon: icCabaña }
+        } else if (row.Description == 'Hospedaje/accommodation' || row.Description == 'Residencial/accommodation') {
+          var config = { icon: icCama }
+        } else if (row.Description == 'Espacio multiuso/public facilities') {
+          var config = { icon: icEspacio }
+        } else if (row.Description == 'Carga de combustible/Fuel Station') {
+          var config = { icon: icCombustible }
+        } else if (row.Description == 'Ferreteria/Hardware Store') {
+          var config = { icon: icFerreteria }
+        } else if (row.Description == 'Informaciones/Information') {
+          var config = { icon: icInformaciones }
+        } else if (row.Description == 'Mirador/viewpoint') {
+          var config = { icon: icMirador }
+        } else if (row.Description == 'Otros servicios/Other services') {
+          var config = { icon: icOtros }
+        } else if (row.Description == 'Plaza/Square') {
+          var config = { icon: icPlaza }
+        }
+        else {
+          config = { icon: icon }
+        }
+
+        if (row.Title == 'Municipalidad de Tortel') {
+          var config = { icon: icMunicipalidad }
+        } else if (row.Title == 'Carabineros') {
+          var config = { icon: icCarabineros }
+        } else if (row.Title == 'Posta Salud Rural') {
+          var config = { icon: icPosta }
+        } else if (row.Title == 'CONAF') {
+          var config = { icon: icConaf }
+        } else if (row.Title == 'Registro Civil') {
+          var config = { icon: icRegistro }
+        } else if (row.Title == 'Biblioteca pública') {
+          var config = { icon: icBiblioteca }
+        }
+      
+        // contactor
+        var contact;
+
+        if (row.Contact === null) {
+           contact = ' ';
+        } else {
+          contact = row.Contact;
+        }
+
+        // crear  marcador 
         var marker = L.marker([row.Latitude, row.Longitude], config, {
           opacity: 1,
           icon: config,
-        }).bindPopup('<b>' + row.Title + '</b> <br> <i>' + row.Description + '</i> <br> <u>' + row.Contact + '<u>');
+        }).bindPopup('<b>' + row.Title + '</b> <br> <i>' + row.Description + '</i> <br> <u>' + contact + '<u>');
 
         marker.addTo(map);
       }
@@ -390,7 +334,7 @@
     });
 
     map.attributionControl.setPrefix(
-      'View <a href="https://github.com/HandsOnDataViz/leaflet-map-csv" target="_blank">code on GitHub</a>'
+      'Mapa Tortel CMG 2024'
     );
 
   </script>
