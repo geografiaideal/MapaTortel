@@ -233,21 +233,20 @@
     // color
     function style(feature) {
       return {
-        weight: 2,
-        opacity: 1,
-        color: 'red',
-        dashArray: '6',
-        fillOpacity: 0.7
+        weight: 6,
+        opacity: 0.7,
+        color: '#722F37',
+        dashArray: '15',
+        // fillOpacity: 0.7
       };
     }
 
     function style2(feature) {
       return {
-        weight: 2,
-        opacity: 1,
-        color: 'purple',
-        dashArray: '6',
-        fillOpacity: 0.7
+        weight: 6,
+        opacity: 0.7,
+        color: '#6A0DAD',
+        dashArray: '15',
       };
     }
 
@@ -255,9 +254,9 @@
     // pasarelas
     L.geoJSON(pasarelas).addTo(map);
     // sendero 
-    L.geoJSON(Sendero_vigia, { style: style }).addTo(map);
+    L.geoJSON(Sendero_vigia, { style: style }).bindPopup('<h3> Sendero Vigia </h3>').addTo(map);
     // campos hielo norte 
-    L.geoJSON(RP_camposHN, { style: style2 }).addTo(map);
+    L.geoJSON(RP_camposHN, { style: style2 }).bindPopup('<h3> Ruta a Campos de hielo norte </h3>').addTo(map);
 
 
     // mas mapas https://leaflet-extras.github.io/leaflet-providers/preview/
