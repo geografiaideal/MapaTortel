@@ -231,14 +231,12 @@
     controlLayers.addBaseLayer(terrain, 'mapa_2');
 
 
-    var Stadia_StamenTerrainBackground = L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_terrain_background/{z}/{x}/{y}{r}.{ext}', {
-	minZoom: 0,
-	maxZoom: 18,
-	attribution: '',
-	ext: 'png'
-});
-controlLayers.addBaseLayer(Stadia_StamenTerrainBackground, 'mapa_3'); 
-	  
+    var OpenStreetMap_BZH = L.tileLayer('https://tile.openstreetmap.bzh/br/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '',
+    });
+    controlLayers.addBaseLayer(OpenStreetMap_BZH, 'mapa_3');
+
     // color
     function style(feature) {
       return {
