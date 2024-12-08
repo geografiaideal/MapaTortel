@@ -44,13 +44,16 @@
   <!-- mapa  -->
   <div id="map"></div>
 
+  <!-- archivo iconos -->
+  <script src="./js/iconos.js"></script>
+
   <!-- agregar archivos shapefile -->
   <!-- pasarelas -->
-  <script src="./pasarelas.js"></script>
+  <script src="./js/pasarelas.js"></script>
   <!-- sendero -->
-  <script src="./Sendero_vigia.js"></script>
+  <script src="./js/Sendero_vigia.js"></script>
   <!-- campos hielo norte -->
-  <script src="./RP_camposHN.js"></script>
+  <script src="./js/RP_camposHN.js"></script>
 
   <script>
 
@@ -64,217 +67,66 @@
       tap: false
     });
 
-    // Routes 
-    //  L.Routing.control({
-    //   waypoints: [
-    //      L.latLng(-47.80376, -73.54081),
-    //     L.latLng(-47.80376, -73.54081)
-    //    ],
-    //  routeWhileDragging: true
-    //  }).addTo(map);
-
-    // Iconos
-    var icon = L.icon({
-      iconUrl: "./img.png",
-      iconSize: [30, 35],
-      popupAnchor: [0, -10]
-    });
-
-    var icAbarrotes = L.icon({
-      iconUrl: "./fwdiconografamapatortel/abarrotes.svg",
-      iconSize: [30, 35],
-      popupAnchor: [0, -10]
-    });
-
-    var icRegistro = L.icon({
-      iconUrl: "./fwdiconografamapatortel/registro.svg",
-      iconSize: [30, 35],
-      popupAnchor: [0, -10]
-    });
-
-    var icBiblioteca = L.icon({
-      iconUrl: "./fwdiconografamapatortel/biblioteca.svg",
-      iconSize: [30, 35],
-      popupAnchor: [0, -10]
-    });
-
-    var icAlimentacion = L.icon({
-      iconUrl: "./fwdiconografamapatortel/alimentacion.svg",
-      iconSize: [30, 35],
-      popupAnchor: [0, -10]
-    });
-
-    var icAlojamiento = L.icon({
-      iconUrl: "./fwdiconografamapatortel/alojamiento.svg",
-      iconSize: [30, 35],
-      popupAnchor: [0, -10]
-    });
-
-    var icArtesania = L.icon({
-      iconUrl: "./fwdiconografamapatortel/artesania.svg",
-      iconSize: [30, 35],
-      popupAnchor: [0, -10]
-    });
-
-    var icAventura = L.icon({
-      iconUrl: "./fwdiconografamapatortel/aventura.svg",
-      iconSize: [30, 35],
-      popupAnchor: [0, -10]
-    });
-
-    var icBomberos = L.icon({
-      iconUrl: "./fwdiconografamapatortel/bomberos.svg",
-      iconSize: [30, 35],
-      popupAnchor: [0, -10]
-    });
-
-    var icCabaña = L.icon({
-      iconUrl: "./fwdiconografamapatortel/cabaña.svg",
-      iconSize: [30, 35],
-      popupAnchor: [0, -10]
-    });
-
-    var icCama = L.icon({
-      iconUrl: "./fwdiconografamapatortel/cama.svg",
-      iconSize: [30, 35],
-      popupAnchor: [0, -10]
-    });
-
-    var icCarabineros = L.icon({
-      iconUrl: "./fwdiconografamapatortel/carabineros.svg",
-      iconSize: [30, 35],
-      popupAnchor: [0, -10]
-    });
-
-    var icCombustible = L.icon({
-      iconUrl: "./fwdiconografamapatortel/combustible.svg",
-      iconSize: [30, 35],
-      popupAnchor: [0, -10]
-    });
-
-    var icConaf = L.icon({
-      iconUrl: "./fwdiconografamapatortel/conaf.svg",
-      iconSize: [30, 35],
-      popupAnchor: [0, -10]
-    });
-
-    var icEspacio = L.icon({
-      iconUrl: "./fwdiconografamapatortel/espacio publico.svg",
-      iconSize: [30, 35],
-      popupAnchor: [0, -10]
-    });
-
-    var icFerreteria = L.icon({
-      iconUrl: "./fwdiconografamapatortel/ferreteria.svg",
-      iconSize: [30, 35],
-      popupAnchor: [0, -10]
-    });
-
-    var icInformaciones = L.icon({
-      iconUrl: "./fwdiconografamapatortel/informaciones.svg",
-      iconSize: [30, 35],
-      popupAnchor: [0, -10]
-    });
-
-    var icMirador = L.icon({
-      iconUrl: "./fwdiconografamapatortel/mirador.svg",
-      iconSize: [30, 35],
-      popupAnchor: [0, -10]
-    });
-
-    var icMunicipalidad = L.icon({
-      iconUrl: "./fwdiconografamapatortel/municipalidad.svg",
-      iconSize: [30, 35],
-      popupAnchor: [0, -10]
-    });
-
-    var icOtros = L.icon({
-      iconUrl: "./fwdiconografamapatortel/otros servicios.svg",
-      iconSize: [30, 35],
-      popupAnchor: [0, -10]
-    });
-
-    var icPlaza = L.icon({
-      iconUrl: "./fwdiconografamapatortel/plaza.svg",
-      iconSize: [30, 35],
-      popupAnchor: [0, -10]
-    });
-
-    var icPosta = L.icon({
-      iconUrl: "./fwdiconografamapatortel/posta.svg",
-      iconSize: [30, 35],
-      popupAnchor: [0, -10]
-    });
-    
-    var icPlayground = L.icon({
-      iconUrl: "./fwdiconografamapatortel/playground.png",
-      iconSize: [30, 30],
-      popupAnchor: [0, -10]
-    });
-
-
     /* Control panel to display map layers */
     var controlLayers = L.control.layers(null, null, {
       position: "topright",
       collapsed: false
     }).addTo(map);
 
-
     // SELECCIONADORES DE MAPA
     // var light = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    var light = L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '',
-      maxZoom: 20,
-    }).addTo(map); // EDIT - insert or remove ".addTo(map)" before last semicolon to display by default
-    controlLayers.addBaseLayer(light, 'mapa_1');
-
-    /* segundo mapa a cargar */
-
-    var terrain = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-      maxZoom: 18,
-      attribution: ''
-    }); // EDIT - insert or remove ".addTo(map)" before last semicolon to display by default
-    controlLayers.addBaseLayer(terrain, 'mapa_2');
-
 
     var OpenStreetMap_BZH = L.tileLayer('https://tile.openstreetmap.bzh/br/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '',
-    });
-    controlLayers.addBaseLayer(OpenStreetMap_BZH, 'mapa_3');
+    }).addTo(map); // EDIT - insert or remove ".addTo(map)" before last semicolon to display by default
+    controlLayers.addBaseLayer(OpenStreetMap_BZH, 'Mapa 1');
 
-    // color
-    function style(feature) {
+    /* segundo mapa a cargar */
+    var terrain = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 18,
+      attribution: ''
+    });
+    controlLayers.addBaseLayer(terrain, 'Mapa 2');
+
+    // colores
+    function styleSendero(feature) {
       return {
         weight: 6,
         opacity: 0.7,
-        color: '#722F37',
-        dashArray: '15',
+        color: '#FF2C97',
+        dashArray: '20',
         // fillOpacity: 0.7
       };
     }
 
-    function style2(feature) {
+    function styleCampos(feature) {
       return {
         weight: 6,
         opacity: 0.7,
         color: '#6A0DAD',
-        dashArray: '15',
+        dashArray: '20',
+      };
+    }
+
+    function stylePasarelas(feature) {
+      return {
+        weight: 4.5,
+        color: '#c1754e'
       };
     }
 
     // cargar shapefile con rutas
     // pasarelas
-    L.geoJSON(pasarelas).addTo(map);
+    L.geoJSON(pasarelas, { style: stylePasarelas }).addTo(map);
     // sendero 
-    L.geoJSON(Sendero_vigia, { style: style }).bindPopup('<h3> Sendero Vigia </h3>').addTo(map);
+    L.geoJSON(Sendero_vigia, { style: styleSendero }).bindPopup('<h3> Sendero Vigia </h3>').addTo(map);
     // campos hielo norte 
-    L.geoJSON(RP_camposHN, { style: style2 }).bindPopup('<h3> Ruta a Campos de hielo norte </h3>').addTo(map);
-
+    L.geoJSON(RP_camposHN, { style: styleCampos }).bindPopup('<h3> Ruta a Campos de hielo norte </h3>').addTo(map);
 
     // mas mapas https://leaflet-extras.github.io/leaflet-providers/preview/
 
-    // // Read markers data from data.csv
+    // Read markers data from data.csv
     $.get('./todos.csv', function (csvString) {
 
       // cargar cvs
@@ -284,28 +136,6 @@
       // req `Latitude`, `Longitude`, and `Title` 
       for (var i in data) {
         var row = data[i];
-
-        // switch (row.Description) {
-        //   case 'Venta abarrotes/Grocery Store':
-        //     var config = {
-        //       icon: icAbarrotes
-        //     }
-        //     break;
-        //   case 'Restaurante':
-        //     var config = {
-        //       icon: icAlimentacion
-        //     }
-        //     break;
-        //   case 'Comida al paso/fast food':
-        //     var config = {
-        //       icon: icAlimentacion
-        //     }
-        //     break;
-        //   default:
-        //     var config = {
-        //       icon: icon
-        //     }
-        // }
 
         if (row.Description == 'Venta abarrotes/Grocery Store') {
           var config = { icon: icAbarrotes }
@@ -339,7 +169,10 @@
           var config = { icon: icPlaza }
         } else if (row.Description == 'Espacio recreacional/playground') {
           var config = { icon: icPlayground }
+        } else if (row.Description == 'Turismo rural/Rural tourism') {
+          var config = { icon: icRural }
         }
+
         else {
           config = { icon: icon }
         }
@@ -358,7 +191,7 @@
           var config = { icon: icBiblioteca }
         }
 
-        // contactor
+        // validar contacto
         var contact;
 
         if (row.Contact === null) {
@@ -367,11 +200,21 @@
           contact = row.Contact;
         }
 
+        //sitio web
+        var link;
+
+        if (row.Link === null) {
+          link = ' ';
+        } else {
+          link = row.Link;
+        }
+
         // crear  marcador 
         var marker = L.marker([row.Latitude, row.Longitude], config, {
           opacity: 1,
           icon: config,
-        }).bindPopup('<b>' + row.Title + '</b> <br> <i>' + row.Description + '</i> <br> <u>' + contact + '<u>');
+        }).bindPopup('<b>' + row.Title + '</b> <br> <i>' + row.Description + '</i> <br> ' + contact + ' <br>'
+          + `<a href="${link}" target="_blank"> ${link}</a>`);
 
         marker.addTo(map);
       }
@@ -379,7 +222,7 @@
     });
 
     map.attributionControl.setPrefix(
-      'Mapa Tortel CMG 2024'
+      'Mapa Tortel 2024 Geografíaideal ©'
     );
 
   </script>
