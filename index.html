@@ -213,7 +213,8 @@
         var marker = L.marker([row.Latitude, row.Longitude], config, {
           opacity: 1,
           icon: config,
-        }).bindPopup('<b>' + row.Title + '</b> <br> <i>' + row.Description + '</i> <br> ' + contact + ' <br>'
+        }).bindPopup('<b>' + row.Title + '</b> <br> <i>' + row.Description + '</i> <br> ' 
+          + `<a href="https://wa.me/${contact}" target="_blank">${contact} </a>`
           + `<a href="${link}" target="_blank"> ${link} </a>`);
 
         marker.addTo(map);
