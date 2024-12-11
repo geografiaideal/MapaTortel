@@ -197,7 +197,7 @@
         if (row.Contact === null) {
           contact = ' ';
         } else {
-          contact = row.Contact;
+          contact = '<img src="./fwdiconografamapatortel/whatsapp.png" width="13"> ' + row.Contact;
         }
 
         //sitio web
@@ -214,7 +214,7 @@
           opacity: 1,
           icon: config,
         }).bindPopup('<b>' + row.Title + '</b> <br> <i>' + row.Description + '</i> <br> '
-          + `<a href="https://wa.me/${contact}" target="_blank">${contact} </a>`
+          + `<a href="https://wa.me/${row.Contact}" target="_blank"> ${contact} </a>`
           + `<a href="${link}" target="_blank"> ${link} </a>`);
 
         marker.addTo(map);
